@@ -622,8 +622,9 @@ function onMouseUpEvent(e) {
         var viewType = gUrlObj.getUrlParameterValue("view_type");
         var titleFontSize = gUrlObj.getUrlParameterValue("title_font_size");
         var rrdFile = gUrlObj.getUrlParameterValue("rrdFile");
+        var data = gUrlObj.getUrlParameterValue("data");
 
-        window.location = urlBase + "&graph_start=" + newGraphStart + "&graph_end=" + newGraphEnd + "&graph_height=" + graphHeight + "&graph_width=" + graphWidth + "&YMin=" + newGraphYMin + "&YMax=" + newGraphYMax + "&rrdFile=" + rrdFile
+        window.location = urlBase + "&graph_start=" + newGraphStart + "&graph_end=" + newGraphEnd + "&graph_height=" + graphHeight + "&graph_width=" + graphWidth + "&YMin=" + newGraphYMin + "&YMax=" + newGraphYMax + "&rrdFile=" + rrdFile + "&data=" + data
 
     }
 
@@ -686,9 +687,10 @@ function onMouseUpEvent(e) {
                 var viewType = gUrlObj.getUrlParameterValue("view_type");
                 var titleFontSize = gUrlObj.getUrlParameterValue("title_font_size");
                 var rrdFile = gUrlObj.getUrlParameterValue("rrdFile");
+                var data = gUrlObj.getUrlParameterValue("data");
 
 
-                window.location = urlBase + "&graph_start=" + newGraphStart + "&graph_end=" + newGraphEnd + "&graph_height=" + graphHeight + "&graph_width=" + graphWidth + "&YMin=" + newGraphYMin + "&YMax=" + newGraphYMax + "&rrdFile=" + rrdFile
+                window.location = urlBase + "&graph_start=" + newGraphStart + "&graph_end=" + newGraphEnd + "&graph_height=" + graphHeight + "&graph_width=" + graphWidth + "&YMin=" + newGraphYMin + "&YMax=" + newGraphYMax + "&rrdFile=" + rrdFile + "&data=" + data
 
             }
         }

@@ -4,27 +4,37 @@ Home Monitor
 
 <?php
 
-$graph_start = time() - (60*60*24);
-$graph_end = time();
-$rrdFile = "homeEnergy";
 
-$imgString = "cgi-bin/viewGraph.cgi?action=zoom&graph_start=$graph_start&graph_end=$graph_end&graph_height=150&graph_width=700&rrdFile=$rrdFile";
+function showGraph($data) {
+	$graph_start = time() - (60*60*24);
+	$graph_end = time();
+	$rrdFile = "homeEnergy";
 
-echo "<img src=$imgString&data=total_kWh><br>";
-echo "<img src=$imgString&data=total_kVARh><br>";
-echo "<img src=$imgString&data=TotalWatts><br>";
+	$imgString = "cgi-bin/viewGraph.cgi?action=zoom&graph_start=$graph_start&graph_end=$graph_end&graph_height=150&graph_width=700&rrdFile=$rrdFile";
+	echo "<a href=viewGraph.php?rrdFile=$rrdFile&data=$data>";
+	echo "<img src=$imgString&data=$data></a><br>";
+}
+
+
+showGraph("total_kWh");
+showGraph("total_kVARh");
+showGraph("TotalWatts");
+
 echo "<hr>";
-echo "<img src=$imgString&data=VoltsL1><br>";
-echo "<img src=$imgString&data=AmpsL1><br>";
-echo "<img src=$imgString&data=WattsL1><br>";
-echo "<img src=$imgString&data=totalL1_kWh><br>";
+showGraph("VoltsL1");
+showGraph("AmpsL1");
+showGraph("WattsL1");
+showGraph("totalL1_kWh");
+
 echo "<hr>";
-echo "<img src=$imgString&data=VoltsL2><br>";
-echo "<img src=$imgString&data=AmpsL2><br>";
-echo "<img src=$imgString&data=WattsL2><br>";
-echo "<img src=$imgString&data=totalL2_kWh><br>";
+showGraph("VoltsL2");
+showGraph("AmpsL2");
+showGraph("WattsL2");
+showGraph("totalL2_kWh");
+
 echo "<hr>";
-echo "<img src=$imgString&data=Pulse1><br>";
-echo "<img src=$imgString&data=Pulse2><br>";
+showGraph("Pulse1");
+showGraph("Pulse2");
+
 
 ?>
