@@ -1,40 +1,53 @@
-<H1>
-Home Monitor
-</H1>
+<html>
+    <script type="text/javascript" src="lib/javascriptrrd.wlibs.js"></script>
+    <!-- the above script replaces the rrdfFlotAsync,rrdFlot, rrdFlotSelection, rrdFile, binaryXHR and all the jquery libraries -->
+  <head>
+    <link href="style.css" rel="stylesheet" type="text/css">
+    <title>Enemon: Energy Monitoring and Alerts</title>
+  </head>
 
-<?php
+  <body>
+    <h1 id="title">Current Energy</h1>
 
-
-function showGraph($data) {
-	$graph_start = time() - (60*60*24);
-	$graph_end = time();
-	$rrdFile = "homeEnergy";
-
-	$imgString = "cgi-bin/viewGraph.cgi?action=zoom&graph_start=$graph_start&graph_end=$graph_end&graph_height=150&graph_width=700&rrdFile=$rrdFile";
-	echo "<a href=viewGraph.php?rrdFile=$rrdFile&data=$data>";
-	echo "<img src=$imgString&data=$data></a><br>";
-}
+    <table id="infotable" border=1>
+        <tr><td colspan="21"><b>Javascript needed for this page to work</b></td></tr>
+    </table>
 
 
-showGraph("total_kWh");
-showGraph("total_kVARh");
-showGraph("TotalWatts");
-
-echo "<hr>";
-showGraph("VoltsL1");
-showGraph("AmpsL1");
-showGraph("WattsL1");
-showGraph("totalL1_kWh");
-
-echo "<hr>";
-showGraph("VoltsL2");
-showGraph("AmpsL2");
-showGraph("WattsL2");
-showGraph("totalL2_kWh");
-
-echo "<hr>";
-showGraph("Pulse1");
-showGraph("Pulse2");
+    <div class="chart-container">
+    	<div id="energyGraph" class="chart-placeholder"></div>
+    </div>
 
 
-?>
+    <script type="text/javascript">
+
+
+      var endTime =  Number(+new Date()) - (8*60*60*1000) + (5*60*1000); //-8 Hours for time zone + 5 mintes empty space
+      var startTime = endTime - 24*60*60*1000;
+      // Remove the Javascript warning
+      document.getElementById("infotable").deleteRow(0);
+
+      var graph_opts={legend: { noColumns:4}};
+      var ds_graph_opts={'ClientGlideIdle':{ color: "#ff8000", label: 'Idle Clinet Glideins', 
+                                       lines: { show: true, fill: true, fillColor:"#ffff80"} },
+                         'ClientGlideTotal':{ label: 'Total Client Glideins', color: "#00c0c0", 
+                                  lines: { show: true, fill: true} },
+                         'ClientInfoAge':{yaxis:2},
+                         'StatusWait':{color: "#000000",yaxis:2}};
+      var rrdflot_defaults={ num_cb_rows:9, use_element_buttons: true, 
+                             multi_ds:false, multi_rra: true, 
+                             use_rra: true, rra:1, 
+                             //If multi_ds is off, don't need to include "-GAUGE" in element names
+                             use_checked_DSs: true, checked_DSs: ["TotalWatts"], 
+                             use_windows:true, window_min:startTime,window_max:endTime,
+                             graph_width:"700px",graph_height:"300px", scale_width:"350px", scale_height:"200px",
+                             timezone:"-8"};
+
+       var fname="/home/data/homeEnergy.rrd";
+       flot_obj=new rrdFlotAsync("energyGraph",fname,null,graph_opts,ds_graph_opts,rrdflot_defaults);
+
+    </script>
+  </body>
+</html>
+
+
