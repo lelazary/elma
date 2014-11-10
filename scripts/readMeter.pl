@@ -13,6 +13,7 @@ my $data1 = &readData("192.168.1.29", 50000, 100, "000300001743", "00");
 my $DATA = unpack2Hash('A1:Header A2:meterType A1:firmware A12:address A8:total_kWh A8:total_kVARh A8:totalRev_kWh A8:totalL1_kWh A8:totalL2_kWh A8:totalL3_kWh A8:totalRevL1_kWh A8:totalRevL2_kWh A8:totalRevL3_kWh A8:totalRes_kWh A8:totalRevRes_kWh A4:VoltsL1 A4:VoltsL2 A4:VoltsL3 A5:AmpsL1 A5:AmpsL2 A5:AmpsL3 A7:WattsL1 A7:WattsL2 A7:WattsL3 A7:TotalWatts A4:CosL1 A4:CosL2 A4:CosL3 A7:VARL1 A7:VARL2 A7:VARL3 A7:VARL123 A4:Frequency A8:Pulse1 A8:Pulse2 A8:Pulse3 A1:PulseInState A1:CurrentDir A1:Output A1:DecimalPlaces A2:Reser A14:DateTime A2:Type A4:End A2:CRC16', $data1);
 #print Dumper($DATA), "\n";
 
+
 updateValues("$dataDir/homeEnergy.rrd", $DATA);
 
 sub readData () {
@@ -84,6 +85,19 @@ sub updateValues {
 	my @keys = ('VoltsL1', 'AmpsL1','WattsL1', 'totalL1_kWh', 'VoltsL2', 'AmpsL2',
 		'WattsL2', 'totalL2_kWh', 'TotalWatts', 'total_kWh', 'total_kVARh',
 		'Pulse1', 'Pulse2');
+
+	#Apply the decimal places to the numbers
+	$$DATA{'VoltsL1'} /= (10**$$DATA{'DecimalPlaces'});
+	$$DATA{'AmpsL1'} /= (10**$$DATA{'DecimalPlaces'});
+	$$DATA{'totalL1_kWh'} /= (10**$$DATA{'DecimalPlaces'});
+	$$DATA{'VoltsL2'} /= (10**$$DATA{'DecimalPlaces'});
+	$$DATA{'AmpsL2'} /= (10**$$DATA{'DecimalPlaces'});
+	$$DATA{'totalL2_kWh'} /= (10**$$DATA{'DecimalPlaces'});
+
+	$$DATA{'total_kWh'} /= (10**$$DATA{'DecimalPlaces'});
+	$$DATA{'total_kVARh'} /= (10**$$DATA{'DecimalPlaces'});
+
+
 
 	my $template =  join(":", @keys), "\n";
 	my $data = join(":", map { $$values{$_} } @keys);

@@ -23,7 +23,7 @@
 
 
       var endTime =  Number(+new Date()) - (8*60*60*1000) + (5*60*1000); //-8 Hours for time zone + 5 mintes empty space
-      var startTime = endTime - 24*60*60*1000;
+      var startTime = endTime - 24*60*60*1000; //Show 24 hours by default
       // Remove the Javascript warning
       document.getElementById("infotable").deleteRow(0);
 
