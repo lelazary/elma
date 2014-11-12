@@ -12,7 +12,7 @@
 <script>
 var totalWatts = [], wattsL1 = [], wattsL2 = [], total_kWh = [];
 var dataset;
-var totalPoints = 100;
+var totalPoints = 300;
 var updateInterval = 1000;
 var now = new Date().getTime();
 
@@ -52,7 +52,7 @@ var options = {
     },
     yaxes: [
         {
-            min: 0,
+            //min: 0,
             tickSize: 1000,
             tickFormatter: function (v, axis) {
                 if (v % 10 == 0) {
@@ -138,9 +138,9 @@ function update(_data) {
     total_kWh.push(temp);
 
     dataset = [
-        { label: "TotalWatts: " + _data.TotalWatts + " W", data: totalWatts, lines: { fill: true, lineWidth: 1.2 }, color: "#00FF00" },
         { label: "WattsL1: " + _data.WattsL1 + " W", data: wattsL1, lines: { lineWidth: 1.2}, color: "#FF0000" },        
         { label: "WattsL2: " + _data.WattsL2 + " W", data: wattsL2, lines: { lineWidth: 1.2}, color: "#0000FF" },        
+        { label: "TotalWatts: " + _data.TotalWatts + " W", data: totalWatts, lines: { fill: true, lineWidth: 1.2 }, color: "#00FF00" },
         { label: "Total kWh: " + _data.total_kWh + " kWh", data: total_kWh, lines: { lineWidth: 1.2}, color: "#FF00FF", yaxis: 2 }        
     ];
 
@@ -177,6 +177,7 @@ $(document).ready(function () {
     <br>
     <h1 id="title"><center>Enemon: Energy Monitor </center></h1><br>
 
+   <center>
     <table id="infotable" border=1>
         <tr><td colspan="21"><b>Javascript needed for this page to work</b></td></tr>
     </table>
@@ -187,6 +188,7 @@ $(document).ready(function () {
     <div class="chart-container">
     	<div id="energyGraph" class="chart-placeholder"></div>
     </div>
+   </center>
 
 
     <script type="text/javascript">
