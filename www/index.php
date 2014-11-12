@@ -1,13 +1,5 @@
 <html>
-    <script type="text/javascript" src="lib/javascriptrrd.wlibs.js"></script>
-    <script type="text/javascript" src="lib/jquery-1.8.3.min.js"></script>
-<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="/js/flot/excanvas.min.js"></script><![endif]-->
-<script type="text/javascript" src="lib/flot/jquery.flot.min.js"></script>
-<script type="text/javascript" src="lib/flot/jquery.flot.time.js"></script>
-<script type="text/javascript" src="lib/flot/jshashtable-2.1.js"></script>
-<script type="text/javascript" src="lib/flot/jquery.numberformatter-1.2.3.min.js"></script>
-<script type="text/javascript" src="lib/flot/jquery.flot.symbol.js"></script>
-<script type="text/javascript" src="lib/flot/jquery.flot.axislabels.js"></script>
+<script type="text/javascript" src="lib/javascriptrrd.wlibs.js"></script>
 
 <script>
 var totalWatts = [], wattsL1 = [], wattsL2 = [], total_kWh = [];
@@ -151,14 +143,7 @@ function update(_data) {
 
 $(document).ready(function () {
     initData();
-
-    dataset = [        
-        { label: "TotalWatts", data: totalWatts, lines:{fill:true, lineWidth:1.2}, color: "#00FF00" },
-        { label: "WattsL1:", data: wattsL1, color: "#0044FF", bars: { show: true }, yaxis: 2 },
-        { label: "WattsL2", data: wattsL2, lines: { lineWidth: 1.2}, color: "#FF0000" },
-        { label: "TotalkWh", data: wattsL2, lines: { lineWidth: 1.2}, color: "#FF0000" }
-    ];
-
+    dataset = [ ];        
     $.plot($("#flot-realtime"), dataset, options);
     setTimeout(GetData, updateInterval);
 });
