@@ -50,7 +50,6 @@ var options = {
     yaxes: [
         {
             min: 0,
-            max: 10000,
             tickSize: 1000,
             tickFormatter: function (v, axis) {
                 if (v % 10 == 0) {
@@ -65,8 +64,6 @@ var options = {
             axisLabelFontFamily: 'Verdana, Arial',
             axisLabelPadding: 6
         }, {
-            min: 0,
-            max: 500,
             tickFormatter: function (v, axis) {
                 if (v % 10 == 0) {
                     return v + " kWh";
@@ -144,7 +141,7 @@ function update(_data) {
         { label: "Total kWh: " + _data.total_kWh + " kWh", data: total_kWh, lines: { lineWidth: 1.2}, color: "#FF00FF", yaxis: 2 }        
     ];
 
-    $.plot($("#flot-placeholder1"), dataset, options);
+    $.plot($("#flot-realtime"), dataset, options);
     setTimeout(GetData, updateInterval);
 }
 
@@ -159,7 +156,7 @@ $(document).ready(function () {
         { label: "TotalkWh", data: wattsL2, lines: { lineWidth: 1.2}, color: "#FF0000" }
     ];
 
-    $.plot($("#flot-placeholder1"), dataset, options);
+    $.plot($("#flot-realtime"), dataset, options);
     setTimeout(GetData, updateInterval);
 });
 
@@ -167,6 +164,6 @@ $(document).ready(function () {
 
 </script>
 <!-- HTML -->
-<div id="flot-placeholder1" style="width:550px;height:300px;margin:0 auto"></div>
+<div id="flot-realtime" style="width:1000px;height:300px;margin:0 auto"></div>
 
 
