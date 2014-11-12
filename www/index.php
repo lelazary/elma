@@ -175,7 +175,7 @@ $(document).ready(function () {
 
   <body>
     <br>
-    <h1 id="title"><center>Enemon Energy Monitor </center></h1><br>
+    <h1 id="title"><center>Enemon: Energy Monitor </center></h1><br>
 
     <table id="infotable" border=1>
         <tr><td colspan="21"><b>Javascript needed for this page to work</b></td></tr>

@@ -10,24 +10,36 @@ my $dataDir = "$rootDir/data";
 createRRD("$dataDir/homeEnergy.rrd") if (!(-e "$dataDir/homeEnergy.rrd"));
 
 my $DATA;
-#Try up to 30 times to get the data, just incase the web server is busy getting
-#it
-foreach my $try (1..30)
+while(1)
 {
 
 	my $data1 = &readData("192.168.1.29", 50000, 100, "000300001743", "00");
 	$DATA = unpack2Hash('A1:Header A2:meterType A1:firmware A12:address A8:total_kWh A8:total_kVARh A8:totalRev_kWh A8:totalL1_kWh A8:totalL2_kWh A8:totalL3_kWh A8:totalRevL1_kWh A8:totalRevL2_kWh A8:totalRevL3_kWh A8:totalRes_kWh A8:totalRevRes_kWh A4:VoltsL1 A4:VoltsL2 A4:VoltsL3 A5:AmpsL1 A5:AmpsL2 A5:AmpsL3 A7:WattsL1 A7:WattsL2 A7:WattsL3 A7:TotalWatts A4:CosL1 A4:CosL2 A4:CosL3 A7:VARL1 A7:VARL2 A7:VARL3 A7:VARL123 A4:Frequency A8:Pulse1 A8:Pulse2 A8:Pulse3 A1:PulseInState A1:CurrentDir A1:Output A1:DecimalPlaces A2:Reser A14:DateTime A2:Type A4:End A2:CRC16', $data1);
-#print Dumper($DATA), "\n";
-	my $end = $$DATA{End};
-	last if (unpack("H*", $$DATA{End}) == "210d0a03");
-	print "Trying $try\n";
-}
+	#print Dumper($DATA), "\n";
+	
+	#Apply the decimal places to the numbers
+	$$DATA{'VoltsL1'} /= 10;
+	$$DATA{'AmpsL1'} /= 10; #(10**$$DATA{'DecimalPlaces'});
+	$$DATA{'totalL1_kWh'} /= (10**$$DATA{'DecimalPlaces'});
+	$$DATA{'VoltsL2'} /= 10;
+	$$DATA{'AmpsL2'} /= 10;
+	$$DATA{'totalL2_kWh'} /= (10**$$DATA{'DecimalPlaces'});
 
-#Only update if we got good values
-#TOCO: check for CRC
-if (unpack("H*", $$DATA{End}) == "210d0a03")
-{
-	updateValues("$dataDir/homeEnergy.rrd", $DATA);
+	$$DATA{'total_kWh'} /= (10**$$DATA{'DecimalPlaces'});
+	$$DATA{'total_kVARh'} /= (10**$$DATA{'DecimalPlaces'});
+
+	#Only update if we got good values
+	#TOCO: check for CRC
+	if (unpack("H*", $$DATA{End}) == "210d0a03")
+	{
+		updateValues("$dataDir/homeEnergy.rrd", $DATA);
+
+		#Save the data into a json file
+		my $json = "{". join(", ", map { "\"$_\": " . int($$DATA{$_}) } keys %$DATA). "}";
+		open(JSON, ">$dataDir/current.json");
+		print JSON $json;
+		close(JSON);
+	}
 }
 
 sub readData () {
@@ -100,16 +112,6 @@ sub updateValues {
 		'WattsL2', 'totalL2_kWh', 'TotalWatts', 'total_kWh', 'total_kVARh',
 		'Pulse1', 'Pulse2');
 
-	#Apply the decimal places to the numbers
-	$$DATA{'VoltsL1'} /= 10;
-	$$DATA{'AmpsL1'} /= 10; #(10**$$DATA{'DecimalPlaces'});
-	$$DATA{'totalL1_kWh'} /= (10**$$DATA{'DecimalPlaces'});
-	$$DATA{'VoltsL2'} /= 10;
-	$$DATA{'AmpsL2'} /= 10;
-	$$DATA{'totalL2_kWh'} /= (10**$$DATA{'DecimalPlaces'});
-
-	$$DATA{'total_kWh'} /= (10**$$DATA{'DecimalPlaces'});
-	$$DATA{'total_kVARh'} /= (10**$$DATA{'DecimalPlaces'});
 
 
 
