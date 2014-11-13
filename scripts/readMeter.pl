@@ -83,13 +83,16 @@ sub createRRD {
 		"DS:VoltsL1:GAUGE:120:0:100000 ",  #60*24*7
 		"DS:AmpsL1:GAUGE:120:0:100000 ",  #60*24*7
 		"DS:WattsL1:GAUGE:120:0:100000 ",  #60*24*7
+		"DS:VARL1:GAUGE:120:0:100000 ",  #60*24*7
 		"DS:totalL1_kWh:GAUGE:120:0:100000 ",  #60*24*7
 		"DS:VoltsL2:GAUGE:120:0:100000 ",  #60*24*7
 		"DS:AmpsL2:GAUGE:120:0:100000 ",  #60*24*7
 		"DS:WattsL2:GAUGE:120:0:100000 ",  #60*24*7
+		"DS:VARL2:GAUGE:120:0:100000 ",  #60*24*7
 		"DS:totalL2_kWh:GAUGE:120:0:100000 ",  #60*24*7
 
 		"DS:TotalWatts:GAUGE:120:0:100000 ",  #60*24*7
+		"DS:VARL123:GAUGE:120:0:100000 ",  #60*24*7
 		"DS:total_kWh:GAUGE:120:0:100000 ",  #60*24*7
 		"DS:total_kVARh:GAUGE:120:0:100000 ",  #60*24*7
 		"DS:Pulse1:COUNTER:120:0:100000 ",  #60*24*7
@@ -108,12 +111,9 @@ sub createRRD {
 }
 sub updateValues {
 	my ($filename, $values) = @_;
-	my @keys = ('VoltsL1', 'AmpsL1','WattsL1', 'totalL1_kWh', 'VoltsL2', 'AmpsL2',
-		'WattsL2', 'totalL2_kWh', 'TotalWatts', 'total_kWh', 'total_kVARh',
+	my @keys = ('VoltsL1', 'AmpsL1','WattsL1', 'VARL1', 'totalL1_kWh', 'VoltsL2', 'AmpsL2',
+		'WattsL2', 'VARL2', 'totalL2_kWh', 'TotalWatts', 'VARL123', 'total_kWh', 'total_kVARh',
 		'Pulse1', 'Pulse2');
-
-
-
 
 	my $template =  join(":", @keys), "\n";
 	my $data = join(":", map { $$values{$_} } @keys);
