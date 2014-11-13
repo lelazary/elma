@@ -59,6 +59,8 @@ var options = {
             axisLabelFontFamily: 'Verdana, Arial',
             axisLabelPadding: 6
         }, {
+            //min: 0,
+            tickSize: 100,
             tickFormatter: function (v, axis) {
                 if (v % 10 == 0) {
                     return v + " kWh";

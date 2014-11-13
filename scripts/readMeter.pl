@@ -35,7 +35,7 @@ while(1)
 		updateValues("$dataDir/homeEnergy.rrd", $DATA);
 
 		#Save the data into a json file
-		my $json = "{". join(", ", map { "\"$_\": " . int($$DATA{$_}) } keys %$DATA). "}";
+		my $json = "{". join(", ", map { "\"$_\": " . ($$DATA{$_} + 0)  } keys %$DATA). "}";
 		open(JSON, ">$dataDir/current.json");
 		print JSON $json;
 		close(JSON);
