@@ -1,0 +1,5 @@
+check process saveIp with pidfile /var/run/readMeter.pl.pid
+    group saveIp 
+    start program = "/usr/local/enemon/readMeter.pl";
+    stop program = "/usr/bin/killall readMeter.pl"
+

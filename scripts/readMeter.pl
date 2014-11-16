@@ -1,13 +1,26 @@
 #!/usr/bin/perl
 use IO::Socket::INET;
 use Data::Dumper;
+use Proc::Daemon;
+use Proc::PID::File;
 use strict;
 use RRDs;
 
-my $rootDir = "/home/elazary/house/meter/enemon";
+my $rootDir = "/usr/local/enemon";
 my $dataDir = "$rootDir/data";
 
-createRRD("$dataDir/homeEnergy.rrd") if (!(-e "$dataDir/homeEnergy.rrd"));
+my $daemon = Proc::Daemon->new(
+		work_dir     => $rootDir,
+		child_STDOUT => '+>>logs/debug.log',
+		child_STDERR => '+>>logs/error.log'
+		);
+
+$daemon->Init();
+
+if (Proc::PID::File->running(dir=>$rootDir)) {
+	print "Already Running\n";
+	exit;
+}
 
 my $DATA;
 while(1)
@@ -32,6 +45,7 @@ while(1)
 	#TOCO: check for CRC
 	if (unpack("H*", $$DATA{End}) == "210d0a03")
 	{
+		createRRD("$dataDir/homeEnergy.rrd") if (!(-e "$dataDir/homeEnergy.rrd"));
 		updateValues("$dataDir/homeEnergy.rrd", $DATA);
 
 		#Save the data into a json file
