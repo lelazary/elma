@@ -6,7 +6,7 @@ use Proc::PID::File;
 use strict;
 use RRDs;
 
-my $rootDir = "/usr/local/enemon";
+my $rootDir = "/usr/local/elma";
 my $dataDir = "$rootDir/data";
 
 my $daemon = Proc::Daemon->new(

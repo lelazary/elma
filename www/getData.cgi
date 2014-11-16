@@ -4,7 +4,7 @@ use Data::Dumper;
 
 use strict;
 
-my $rootDir = "/usr/local/enemon";
+my $rootDir = "/usr/local/elma";
 my $dataDir = "$rootDir/data";
 open(FILE, "$dataDir/current.json") || die;
 while(<FILE>)

@@ -191,7 +191,7 @@ $(document).ready(function () {
 
   <body>
     <br>
-    <h1 id="title"><center>Enemon: Energy Monitor </center></h1><br>
+    <h1 id="title"><center>ELMA: Energy Labeling Monitoring and Alers </center></h1><br>
 
    <center>
     <table id="infotable" border=1>

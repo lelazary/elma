@@ -1,4 +1,4 @@
-EMA
+ELMA
 ======
 
 Energy Monitoring and Alerts
